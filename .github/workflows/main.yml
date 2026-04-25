@@ -8,28 +8,38 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Setup Python
-        uses: actions/setup-python@v5
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-
-      - name: Make ultra binary executable
-        run: chmod +x ultra
-
-      - name: Install Flask
-        run: pip install flask
-
+      - run: chmod +x ultra
+      - run: pip install flask
       - name: Install Railway CLI
-        run: |
-          curl -fsSL https://railway.app/install.sh | sh
-          echo "$HOME/.railway/bin" >> $GITHUB_PATH
-
+        run: curl -fsSL https://railway.app/install.sh | sh && echo "$HOME/.railway/bin" >> $GITHUB_PATH
       - name: Deploy to Railway
         run: railway up
         env:
-          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+          RAILWAY_TOKEN: "name: Deploy to Railway
+
+on:
+  push:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: chmod +x ultra
+      - run: pip install flask
+      - name: Install Railway CLI
+        run: curl -fsSL https://railway.app/install.sh | sh && echo "$HOME/.railway/bin" >> $GITHUB_PATH
+      - name: Deploy to Railway
+        run: railway up
+        env:
+          RAILWAY_TOKEN: "7053fb64-3652-4406-ae0d-ff2fdd1ebfd4"
