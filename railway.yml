@@ -1,0 +1,6 @@
+build:
+  builder: nixpacks
+  buildCommand: chmod +x ultra && pip install flask
+
+start:
+  command: python3 ultra.py
