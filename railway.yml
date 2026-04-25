@@ -1,6 +1,30 @@
+# railway.yml – Complete configuration for SatelliteStress attack panel
+
 build:
   builder: nixpacks
-  buildCommand: chmod +x ultra && pip install flask
+  nixpacks:
+    plan:
+      pkgs:
+        - python311          # Python 3.11
+      phases:
+        - name: "Make ultra binary executable"
+          command: "chmod +x ultra"
+        - name: "Install Flask"
+          command: "pip install flask"
+        - name: "Verify installation"
+          command: |
+            echo "✅ Binary permissions set"
+            python -c "import flask; print('✅ Flask installed')"
 
 start:
   command: python3 ultra.py
+  ports:
+    - port: 8080
+      protocol: http
+
+# Environment variables (optional – your app can read these)
+env:
+  - name: "DEFAULT_THREADS"
+    value: "1500"
+  - name: "FLASK_ENV"
+    value: "production"
